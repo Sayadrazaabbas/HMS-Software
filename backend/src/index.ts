@@ -18,13 +18,26 @@ import pharmacyRoutes from './routes/pharmacy.routes';
 const app = express();
 const PORT = process.env.PORT || 3001;
 
+// CORS configuration for production
+const allowedOrigins = [
+    'http://localhost:3000',
+    process.env.FRONTEND_URL,
+].filter(Boolean) as string[];
+
 // Middleware
 app.use(helmet()); // Security headers
 app.use(cors({
-    origin: process.env.FRONTEND_URL || 'http://localhost:3000',
+    origin: (origin, callback) => {
+        // Allow requests with no origin (mobile apps, Postman, etc.)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.some(allowed => origin.startsWith(allowed) || allowed.includes(origin))) {
+            return callback(null, true);
+        }
+        callback(new Error('Not allowed by CORS'));
+    },
     credentials: true,
 }));
-app.use(morgan('dev')); // Request logging
+app.use(morgan(process.env.NODE_ENV === 'production' ? 'combined' : 'dev')); // Request logging
 app.use(express.json()); // Parse JSON bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded bodies
 

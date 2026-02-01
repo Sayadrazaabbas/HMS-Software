@@ -1,0 +1,3 @@
+# Only exclude large cache files
+.next/dev/cache/
+.next/cache/

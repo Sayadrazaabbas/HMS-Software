@@ -1,0 +1,163 @@
+[00:00:03.761] Server  LOG     ✓ Ready in 2.8s
+[00:00:39.965] Server  LOG     ○ Compiling / ...
+[00:00:49.602] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:49.912] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/login" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="en"
+-                         data-jetski-tab-id="1705701584"
+                        >
+                  ...
+
+[00:02:54.043] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:02:54.168] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/appointments" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="en"
+-                         data-jetski-tab-id="1705701584"
+                        >
+                  ...
+
+[00:05:35.664] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:05:35.899] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/appointments" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="en"
+-                         data-jetski-tab-id="1705701584"
+                        >
+                  ...
+
+[00:05:38.311] Browser ERROR   Failed to fetch appointments: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"date":"2026-02-01","limit":10,"page":1},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/appointments","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async fetchAppointments (http://localhost:3000/_next/static/chunks/_82f8608b._.js:121:30)"}
+[00:05:38.311] Browser ERROR   Failed to fetch appointments: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"date":"2026-02-01","limit":10,"page":1},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/appointments","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async fetchAppointments (http://localhost:3000/_next/static/chunks/_82f8608b._.js:121:30)"}
+[00:09:16.528] Server  LOG     ✓ Compiled in 0ms
+[00:09:18.306] Server  LOG     ✓ Compiled in 91ms
+[00:10:09.599] Server  LOG     ✓ Compiled in 116ms
+[00:10:25.400] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:10:25.624] Browser ERROR   A tree hydrated but some attributes of the server rendered HTML didn't match the client properties. This won't be patched up. This can happen if a SSR-ed Client Component used:
+
+- A server/client branch `if (typeof window !== 'undefined')`.
+- Variable input such as `Date.now()` or `Math.random()` which changes each time it's called.
+- Date formatting in a user's locale which doesn't match the server.
+- External changing data without sending a snapshot of it along with the HTML.
+- Invalid HTML tag nesting.
+
+It can also happen if the client has a browser extension installed which messes with the HTML before React loaded.
+
+%s%s https://react.dev/link/hydration-mismatch 
+
+  ...
+    <HotReload globalError={[...]} webSocket={WebSocket} staticIndicatorState={{pathname:null, ...}}>
+      <AppDevOverlayErrorBoundary globalError={[...]}>
+        <ReplaySsrOnlyErrors>
+        <DevRootHTTPAccessFallbackBoundary>
+          <HTTPAccessFallbackBoundary notFound={<NotAllowedRootHTTPFallbackError>}>
+            <HTTPAccessFallbackErrorBoundary pathname="/dashboard" notFound={<NotAllowedRootHTTPFallbackError>} ...>
+              <RedirectBoundary>
+                <RedirectErrorBoundary router={{...}}>
+                  <Head>
+                  <__next_root_layout_boundary__>
+                    <SegmentViewNode type="layout" pagePath="layout.tsx">
+                      <SegmentTrieNode>
+                      <link>
+                      <script>
+                      <RootLayout>
+                        <html
+                          lang="en"
+-                         data-jetski-tab-id="1705701585"
+                        >
+                          <body
++                           className="geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__var..."
+-                           className="geist_a71539c9-module__T19VSG__variable geist_mono_8d43a2aa-module__8Li5zG__var..."
+                          >
+                  ...
+
+[00:10:28.094] Browser ERROR   Failed to fetch dashboard data: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/dashboard/stats","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async Promise.all (index 0)\n    at async DashboardPage.useEffect.fetchData (http://localhost:3000/_next/static/chunks/_abcbbc69._.js:140:57)"}
+[00:10:28.094] Browser ERROR   Failed to fetch dashboard data: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/dashboard/stats","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async Promise.all (index 0)\n    at async DashboardPage.useEffect.fetchData (http://localhost:3000/_next/static/chunks/_abcbbc69._.js:140:57)"}
+[00:10:33.007] Browser ERROR   Failed to fetch appointments: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"date":"2026-02-01","limit":10,"page":1},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/appointments","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async fetchAppointments (http://localhost:3000/_next/static/chunks/_82f8608b._.js:121:30)"}
+[00:10:33.007] Browser ERROR   Failed to fetch appointments: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"date":"2026-02-01","limit":10,"page":1},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/appointments","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async fetchAppointments (http://localhost:3000/_next/static/chunks/_82f8608b._.js:121:30)"}
+[00:10:51.373] Browser ERROR   Failed to fetch invoices: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"limit":10,"page":1},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/billing/invoices","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async fetchInvoices (http://localhost:3000/_next/static/chunks/_7db94000._.js:147:30)"}
+[00:10:51.373] Browser ERROR   Failed to fetch invoices: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"limit":10,"page":1},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/billing/invoices","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async fetchInvoices (http://localhost:3000/_next/static/chunks/_7db94000._.js:147:30)"}
+[00:11:02.930] Browser ERROR   Failed to fetch medicines: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"limit":10,"page":1,"search":""},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/pharmacy/medicines","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async Promise.all (index 0)\n    at async fetchMedicines (http://localhost:3000/_next/static/chunks/_e37c7499._.js:112:54)"}
+[00:11:02.930] Browser ERROR   Failed to fetch medicines: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"limit":10,"page":1,"search":""},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/pharmacy/medicines","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async Promise.all (index 0)\n    at async fetchMedicines (http://localhost:3000/_next/static/chunks/_e37c7499._.js:112:54)"}
+[00:11:13.120] Browser ERROR   Failed to fetch invoices: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"limit":10,"page":1},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/billing/invoices","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async fetchInvoices (http://localhost:3000/_next/static/chunks/_7db94000._.js:147:30)"}
+[00:11:13.120] Browser ERROR   Failed to fetch invoices: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"limit":10,"page":1},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/billing/invoices","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async fetchInvoices (http://localhost:3000/_next/static/chunks/_7db94000._.js:147:30)"}
+[00:11:30.029] Browser ERROR   Failed to fetch medicines: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"limit":10,"page":1,"search":""},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/pharmacy/medicines","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async Promise.all (index 0)\n    at async fetchMedicines (http://localhost:3000/_next/static/chunks/_e37c7499._.js:112:54)"}
+[00:11:30.029] Browser ERROR   Failed to fetch medicines: {"code":"ERR_NETWORK","config":{"adapter":["xhr","http","fetch"],"allowAbsoluteUrls":true,"baseURL":"http://localhost:3001/api/v1","env":{},"headers":{"Accept":"application/json, text/plain, */*","Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJkNThhNjNiNi0zZWE1LTQyNWUtOTc0MS0xNTBmYjFiNGRjZTYiLCJlbWFpbCI6ImFkbWluQGJuaG9zcGl0YWwuY29tIiwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzY5OTUzMjMwLCJleHAiOjE3Njk5NTY4MzB9.N5ixWNXLi8VbiK4pook4Ly3xuexpGNAeJ5BMl6rlJqQ","Content-Type":"application/json"},"maxBodyLength":-1,"maxContentLength":-1,"method":"get","params":{"limit":10,"page":1,"search":""},"timeout":0,"transformRequest":[null],"transformResponse":[null],"transitional":{"clarifyTimeoutError":false,"forcedJSONParsing":true,"silentJSONParsing":true},"url":"/pharmacy/medicines","xsrfCookieName":"XSRF-TOKEN","xsrfHeaderName":"X-XSRF-TOKEN"},"message":"Network Error","name":"AxiosError","stack":"AxiosError: Network Error\n    at XMLHttpRequest.handleError (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:6505:25)\n    at Axios.request (http://localhost:3000/_next/static/chunks/node_modules_a6e0c449._.js:7263:49)\n    at async Promise.all (index 0)\n    at async fetchMedicines (http://localhost:3000/_next/static/chunks/_e37c7499._.js:112:54)"}

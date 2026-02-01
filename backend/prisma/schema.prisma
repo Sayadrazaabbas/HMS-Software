@@ -1,0 +1,699 @@
+// prisma/schema.prisma
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================
+// CORE TABLES
+// ============================================
+
+model User {
+  id            String    @id @default(uuid())
+  email         String    @unique
+  phone         String?   @unique
+  password      String
+  name          String
+  avatar        String?
+  roleId        String
+  role          Role      @relation(fields: [roleId], references: [id])
+  isActive      Boolean   @default(true)
+  lastLogin     DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  // Relations
+  doctor        Doctor?
+  employee      Employee?
+  createdInvoices Invoice[]
+  auditLogs     AuditLog[]
+  
+  @@map("users")
+}
+
+model Role {
+  id          String   @id @default(uuid())
+  name        String   @unique  // admin, doctor, receptionist, etc.
+  displayName String
+  permissions String[] // Array of permission codes
+  isSystem    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  
+  users       User[]
+  
+  @@map("roles")
+}
+
+model Setting {
+  id        String   @id @default(uuid())
+  key       String   @unique
+  value     String
+  group     String   // hospital, billing, notification
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("settings")
+}
+
+model Department {
+  id          String   @id @default(uuid())
+  name        String
+  code        String   @unique
+  description String?
+  isActive    Boolean  @default(true)
+  
+  doctors     Doctor[]
+  employees   Employee[]
+  
+  @@map("departments")
+}
+
+// ============================================
+// PATIENT TABLES
+// ============================================
+
+model Patient {
+  id              String    @id @default(uuid())
+  patientId       String    @unique  // P-2024-0001 format
+  name            String
+  phone           String
+  email           String?
+  dateOfBirth     DateTime?
+  age             Int?
+  gender          Gender
+  bloodGroup      BloodGroup?
+  photo           String?
+  address         String?
+  city            String?
+  state           String?
+  pincode         String?
+  abhaId          String?   @unique
+  emergencyName   String?
+  emergencyPhone  String?
+  allergies       String?
+  chronicConditions String[]
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  appointments    Appointment[]
+  visits          PatientVisit[]
+  invoices        Invoice[]
+  admissions      Admission[]
+  labSamples      LabSample[]
+  prescriptions   Prescription[]
+  
+  @@map("patients")
+}
+
+model PatientVisit {
+  id            String     @id @default(uuid())
+  visitId       String     @unique  // V-2024-0001
+  patientId     String
+  patient       Patient    @relation(fields: [patientId], references: [id])
+  doctorId      String
+  doctor        Doctor     @relation(fields: [doctorId], references: [id])
+  visitType     VisitType  @default(OPD)
+  chiefComplaint String?
+  diagnosis     String?
+  notes         String?
+  visitDate     DateTime   @default(now())
+  status        VisitStatus @default(IN_QUEUE)
+  
+  vitalSigns    VitalSign?
+  prescription  Prescription?
+  
+  @@map("patient_visits")
+}
+
+model VitalSign {
+  id           String      @id @default(uuid())
+  visitId      String      @unique
+  visit        PatientVisit @relation(fields: [visitId], references: [id])
+  temperature  Float?
+  bloodPressureSystolic  Int?
+  bloodPressureDiastolic Int?
+  pulse        Int?
+  respRate     Int?
+  weight       Float?
+  height       Float?
+  spo2         Int?
+  recordedAt   DateTime    @default(now())
+  
+  @@map("vital_signs")
+}
+
+// ============================================
+// APPOINTMENT TABLES
+// ============================================
+
+model Doctor {
+  id            String    @id @default(uuid())
+  userId        String    @unique
+  user          User      @relation(fields: [userId], references: [id])
+  departmentId  String
+  department    Department @relation(fields: [departmentId], references: [id])
+  specialization String?
+  qualification String?
+  registrationNo String?
+  consultationFee Decimal @default(0)
+  
+  appointments  Appointment[]
+  schedules     DoctorSchedule[]
+  visits        PatientVisit[]
+  prescriptions Prescription[]
+  
+  @@map("doctors")
+}
+
+model DoctorSchedule {
+  id          String    @id @default(uuid())
+  doctorId    String
+  doctor      Doctor    @relation(fields: [doctorId], references: [id])
+  dayOfWeek   Int       // 0=Sunday, 1=Monday, etc.
+  startTime   String    // "09:00"
+  endTime     String    // "17:00"
+  slotDuration Int      @default(15) // minutes
+  isActive    Boolean   @default(true)
+  
+  @@unique([doctorId, dayOfWeek])
+  @@map("doctor_schedules")
+}
+
+model Appointment {
+  id            String    @id @default(uuid())
+  appointmentId String    @unique  // APT-2024-0001
+  patientId     String
+  patient       Patient   @relation(fields: [patientId], references: [id])
+  doctorId      String
+  doctor        Doctor    @relation(fields: [doctorId], references: [id])
+  date          DateTime
+  startTime     String
+  endTime       String
+  status        AppointmentStatus @default(SCHEDULED)
+  type          AppointmentType @default(CONSULTATION)
+  reason        String?
+  notes         String?
+  createdAt     DateTime  @default(now())
+  
+  @@map("appointments")
+}
+
+// ============================================
+// BILLING TABLES
+// ============================================
+
+model Invoice {
+  id            String    @id @default(uuid())
+  invoiceNo     String    @unique  // INV-2024-0001
+  patientId     String
+  patient       Patient   @relation(fields: [patientId], references: [id])
+  invoiceType   InvoiceType
+  subtotal      Decimal
+  discountType  DiscountType?
+  discountValue Decimal   @default(0)
+  taxAmount     Decimal   @default(0)
+  totalAmount   Decimal
+  paidAmount    Decimal   @default(0)
+  dueAmount     Decimal
+  status        InvoiceStatus @default(PENDING)
+  createdById   String
+  createdBy     User      @relation(fields: [createdById], references: [id])
+  createdAt     DateTime  @default(now())
+  dueDate       DateTime?
+  
+  items         InvoiceItem[]
+  payments      Payment[]
+  
+  @@map("invoices")
+}
+
+model InvoiceItem {
+  id          String    @id @default(uuid())
+  invoiceId   String
+  invoice     Invoice   @relation(fields: [invoiceId], references: [id])
+  itemType    String    // service, medicine, lab_test
+  itemId      String?   // Reference to service/medicine/test
+  description String
+  quantity    Int       @default(1)
+  unitPrice   Decimal
+  amount      Decimal
+  
+  @@map("invoice_items")
+}
+
+model Payment {
+  id          String    @id @default(uuid())
+  paymentId   String    @unique  // PAY-2024-0001
+  invoiceId   String
+  invoice     Invoice   @relation(fields: [invoiceId], references: [id])
+  amount      Decimal
+  paymentMode PaymentMode
+  reference   String?   // Cheque no, UPI ref, etc.
+  receivedAt  DateTime  @default(now())
+  
+  @@map("payments")
+}
+
+model Service {
+  id          String    @id @default(uuid())
+  name        String
+  code        String    @unique
+  category    String
+  price       Decimal
+  isActive    Boolean   @default(true)
+  
+  @@map("services")
+}
+
+// ============================================
+// PHARMACY TABLES
+// ============================================
+
+model Medicine {
+  id            String    @id @default(uuid())
+  name          String
+  genericName   String?
+  code          String    @unique
+  category      String    // tablet, syrup, injection
+  manufacturer  String?
+  unit          String    // strip, bottle, vial
+  reorderLevel  Int       @default(10)
+  isActive      Boolean   @default(true)
+  
+  stocks        MedicineStock[]
+  purchaseItems PurchaseItem[]
+  saleItems     PharmacySaleItem[]
+  prescriptionItems PrescriptionItem[]
+  
+  @@map("medicines")
+}
+
+model MedicineStock {
+  id          String    @id @default(uuid())
+  medicineId  String
+  medicine    Medicine  @relation(fields: [medicineId], references: [id])
+  batchNo     String
+  quantity    Int
+  mrp         Decimal
+  purchasePrice Decimal
+  expiryDate  DateTime
+  createdAt   DateTime  @default(now())
+  
+  @@unique([medicineId, batchNo])
+  @@map("medicine_stocks")
+}
+
+model Purchase {
+  id          String    @id @default(uuid())
+  purchaseNo  String    @unique
+  supplierId  String?
+  totalAmount Decimal
+  createdAt   DateTime  @default(now())
+  
+  items       PurchaseItem[]
+  
+  @@map("purchases")
+}
+
+model PurchaseItem {
+  id          String    @id @default(uuid())
+  purchaseId  String
+  purchase    Purchase  @relation(fields: [purchaseId], references: [id])
+  medicineId  String
+  medicine    Medicine  @relation(fields: [medicineId], references: [id])
+  batchNo     String
+  quantity    Int
+  unitPrice   Decimal
+  amount      Decimal
+  expiryDate  DateTime
+  
+  @@map("purchase_items")
+}
+
+model PharmacySale {
+  id          String    @id @default(uuid())
+  saleId      String    @unique
+  patientId   String?
+  prescriptionId String?
+  totalAmount Decimal
+  discount    Decimal   @default(0)
+  netAmount   Decimal
+  paymentMode PaymentMode
+  createdAt   DateTime  @default(now())
+  
+  items       PharmacySaleItem[]
+  
+  @@map("pharmacy_sales")
+}
+
+model PharmacySaleItem {
+  id          String    @id @default(uuid())
+  saleId      String
+  sale        PharmacySale @relation(fields: [saleId], references: [id])
+  medicineId  String
+  medicine    Medicine  @relation(fields: [medicineId], references: [id])
+  batchNo     String
+  quantity    Int
+  unitPrice   Decimal
+  amount      Decimal
+  
+  @@map("pharmacy_sale_items")
+}
+
+model Prescription {
+  id          String    @id @default(uuid())
+  visitId     String    @unique
+  visit       PatientVisit @relation(fields: [visitId], references: [id])
+  patientId   String
+  patient     Patient   @relation(fields: [patientId], references: [id])
+  doctorId    String
+  doctor      Doctor    @relation(fields: [doctorId], references: [id])
+  diagnosis   String?
+  advice      String?
+  followUpDate DateTime?
+  createdAt   DateTime  @default(now())
+  
+  items       PrescriptionItem[]
+  
+  @@map("prescriptions")
+}
+
+model PrescriptionItem {
+  id            String    @id @default(uuid())
+  prescriptionId String
+  prescription  Prescription @relation(fields: [prescriptionId], references: [id])
+  medicineId    String?
+  medicine      Medicine? @relation(fields: [medicineId], references: [id])
+  medicineName  String
+  dosage        String    // "1 tab"
+  frequency     String    // "3 times daily"
+  duration      String    // "5 days"
+  instructions  String?   // "After food"
+  
+  @@map("prescription_items")
+}
+
+// ============================================
+// LAB (PATHOLOGY) TABLES
+// ============================================
+
+model LabTest {
+  id            String    @id @default(uuid())
+  name          String
+  code          String    @unique
+  category      String    // blood, urine, stool, etc.
+  price         Decimal
+  reportTime    Int       // hours to generate report
+  sampleType    String
+  parameters    Json?     // Array of parameters with normal ranges
+  isActive      Boolean   @default(true)
+  
+  samples       LabSample[]
+  
+  @@map("lab_tests")
+}
+
+model LabSample {
+  id          String    @id @default(uuid())
+  sampleId    String    @unique  // LAB-2024-0001
+  patientId   String
+  patient     Patient   @relation(fields: [patientId], references: [id])
+  testId      String
+  test        LabTest   @relation(fields: [testId], references: [id])
+  orderedById String
+  collectedAt DateTime?
+  status      LabSampleStatus @default(PENDING)
+  
+  result      LabResult?
+  
+  @@map("lab_samples")
+}
+
+model LabResult {
+  id          String    @id @default(uuid())
+  sampleId    String    @unique
+  sample      LabSample @relation(fields: [sampleId], references: [id])
+  results     Json      // { parameter: value, ... }
+  interpretation String?
+  technicianId String
+  verifiedById String?
+  verifiedAt  DateTime?
+  createdAt   DateTime  @default(now())
+  
+  @@map("lab_results")
+}
+
+// ============================================
+// IPD TABLES
+// ============================================
+
+model Ward {
+  id          String    @id @default(uuid())
+  name        String
+  code        String    @unique
+  type        WardType
+  floor       String?
+  
+  beds        Bed[]
+  
+  @@map("wards")
+}
+
+model Bed {
+  id          String    @id @default(uuid())
+  bedNo       String
+  wardId      String
+  ward        Ward      @relation(fields: [wardId], references: [id])
+  status      BedStatus @default(AVAILABLE)
+  dailyCharge Decimal   @default(0)
+  
+  admissions  Admission[]
+  
+  @@unique([wardId, bedNo])
+  @@map("beds")
+}
+
+model Admission {
+  id            String    @id @default(uuid())
+  admissionId   String    @unique  // ADM-2024-0001
+  patientId     String
+  patient       Patient   @relation(fields: [patientId], references: [id])
+  bedId         String
+  bed           Bed       @relation(fields: [bedId], references: [id])
+  doctorId      String
+  admissionDate DateTime  @default(now())
+  dischargeDate DateTime?
+  diagnosis     String?
+  status        AdmissionStatus @default(ADMITTED)
+  
+  @@map("admissions")
+}
+
+// ============================================
+// HR TABLES
+// ============================================
+
+model Employee {
+  id            String    @id @default(uuid())
+  employeeId    String    @unique  // EMP-001
+  userId        String?   @unique
+  user          User?     @relation(fields: [userId], references: [id])
+  departmentId  String
+  department    Department @relation(fields: [departmentId], references: [id])
+  name          String
+  phone         String
+  email         String?
+  designation   String
+  joinDate      DateTime
+  salary        Decimal
+  isActive      Boolean   @default(true)
+  
+  attendance    Attendance[]
+  leaves        Leave[]
+  
+  @@map("employees")
+}
+
+model Attendance {
+  id          String    @id @default(uuid())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  date        DateTime
+  inTime      DateTime?
+  outTime     DateTime?
+  status      AttendanceStatus @default(PRESENT)
+  
+  @@unique([employeeId, date])
+  @@map("attendance")
+}
+
+model Leave {
+  id          String    @id @default(uuid())
+  employeeId  String
+  employee    Employee  @relation(fields: [employeeId], references: [id])
+  leaveType   LeaveType
+  fromDate    DateTime
+  toDate      DateTime
+  reason      String?
+  status      LeaveStatus @default(PENDING)
+  approvedById String?
+  
+  @@map("leaves")
+}
+
+// ============================================
+// AUDIT & LOGS
+// ============================================
+
+model AuditLog {
+  id          String    @id @default(uuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  action      String    // CREATE, UPDATE, DELETE
+  entity      String    // patient, appointment, invoice
+  entityId    String
+  oldValue    Json?
+  newValue    Json?
+  ipAddress   String?
+  createdAt   DateTime  @default(now())
+  
+  @@map("audit_logs")
+}
+
+// ============================================
+// ENUMS
+// ============================================
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
+
+enum BloodGroup {
+  A_POSITIVE
+  A_NEGATIVE
+  B_POSITIVE
+  B_NEGATIVE
+  AB_POSITIVE
+  AB_NEGATIVE
+  O_POSITIVE
+  O_NEGATIVE
+}
+
+enum VisitType {
+  OPD
+  IPD
+  EMERGENCY
+}
+
+enum VisitStatus {
+  IN_QUEUE
+  IN_CONSULTATION
+  COMPLETED
+  CANCELLED
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  CHECKED_IN
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+enum AppointmentType {
+  CONSULTATION
+  FOLLOW_UP
+  PROCEDURE
+  LAB
+  RADIOLOGY
+}
+
+enum InvoiceType {
+  OPD
+  IPD
+  PHARMACY
+  LAB
+  RADIOLOGY
+}
+
+enum InvoiceStatus {
+  PENDING
+  PARTIAL
+  PAID
+  CANCELLED
+  REFUNDED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  FIXED
+}
+
+enum PaymentMode {
+  CASH
+  CARD
+  UPI
+  CHEQUE
+  BANK_TRANSFER
+  TPA
+}
+
+enum LabSampleStatus {
+  PENDING
+  COLLECTED
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum WardType {
+  GENERAL
+  PRIVATE
+  ICU
+  NICU
+  PEDIATRIC
+  MATERNITY
+}
+
+enum BedStatus {
+  AVAILABLE
+  OCCUPIED
+  RESERVED
+  MAINTENANCE
+}
+
+enum AdmissionStatus {
+  ADMITTED
+  DISCHARGED
+  TRANSFERRED
+}
+
+enum AttendanceStatus {
+  PRESENT
+  ABSENT
+  HALF_DAY
+  LEAVE
+}
+
+enum LeaveType {
+  CASUAL
+  SICK
+  EARNED
+  UNPAID
+}
+
+enum LeaveStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}

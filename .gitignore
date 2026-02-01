@@ -1,0 +1,6 @@
+# Exclude large cache files (>100MB) that GitHub rejects
+.next/dev/cache/
+.next/cache/
+# Exclude large native binaries
+**/next-swc.win32-x64-msvc.node
+**/*.node

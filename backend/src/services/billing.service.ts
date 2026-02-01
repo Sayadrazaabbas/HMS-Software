@@ -1,4 +1,4 @@
-import { PrismaClient, InvoiceStatus } from '@prisma/client';
+import { PrismaClient, InvoiceStatus, PaymentMode, InvoiceType } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -26,7 +26,7 @@ interface CreateInvoiceInput {
 interface AddPaymentInput {
     invoiceId: string;
     amount: number;
-    method: 'CASH' | 'CARD' | 'UPI' | 'BANK_TRANSFER' | 'INSURANCE';
+    method: PaymentMode;
     reference?: string;
     notes?: string;
 }
@@ -53,6 +53,34 @@ const generateInvoiceNo = async (): Promise<string> => {
     let nextNumber = 1;
     if (lastInvoice) {
         const lastNumber = parseInt(lastInvoice.invoiceNo.split('-')[2]);
+        nextNumber = lastNumber + 1;
+    }
+
+    return `${prefix}${nextNumber.toString().padStart(4, '0')}`;
+};
+
+/**
+ * Generate payment ID in format PAY-YYYYMMDD-XXXX
+ */
+const generatePaymentId = async (): Promise<string> => {
+    const today = new Date();
+    const dateStr = today.toISOString().slice(0, 10).replace(/-/g, '');
+    const prefix = `PAY-${dateStr}-`;
+
+    const lastPayment = await prisma.payment.findFirst({
+        where: {
+            paymentId: {
+                startsWith: prefix,
+            },
+        },
+        orderBy: {
+            paymentId: 'desc',
+        },
+    });
+
+    let nextNumber = 1;
+    if (lastPayment) {
+        const lastNumber = parseInt(lastPayment.paymentId.split('-')[2]);
         nextNumber = lastNumber + 1;
     }
 
@@ -90,13 +118,7 @@ export const getAll = async ({ page, limit, status, patientId }: GetAllParams) =
                         phone: true,
                     },
                 },
-                items: {
-                    include: {
-                        service: {
-                            select: { name: true },
-                        },
-                    },
-                },
+                items: true,
                 payments: {
                     orderBy: { receivedAt: 'desc' },
                     take: 1,
@@ -125,11 +147,7 @@ export const getById = async (id: string) => {
         where: { id },
         include: {
             patient: true,
-            items: {
-                include: {
-                    service: true,
-                },
-            },
+            items: true,
             payments: {
                 orderBy: { receivedAt: 'desc' },
             },
@@ -149,12 +167,12 @@ export const create = async (data: CreateInvoiceInput) => {
         const amount = item.quantity * item.unitPrice - (item.discount || 0);
         subtotal += amount;
         return {
+            itemType: 'SERVICE',
+            itemId: item.serviceId,
             description: item.description,
             quantity: item.quantity,
             unitPrice: item.unitPrice,
-            discount: item.discount || 0,
-            amount,
-            serviceId: item.serviceId,
+            amount: amount
         };
     });
 
@@ -162,17 +180,23 @@ export const create = async (data: CreateInvoiceInput) => {
     const taxAmount = data.tax || 0;
     const totalAmount = subtotal - discountAmount + taxAmount;
 
+    // Fetch a fallback user for createdById if available
+    const systemUser = await prisma.user.findFirst();
+    const createdById = systemUser?.id || '';
+
     return prisma.invoice.create({
         data: {
             invoiceNo,
             patientId: data.patientId,
-            visitId: data.visitId,
+            // visitId: data.visitId, // visitId does not exist on Invoice model!
+            invoiceType: InvoiceType.OPD,
             subtotal,
-            discount: discountAmount,
-            tax: taxAmount,
+            discountValue: discountAmount,
+            taxAmount: taxAmount,
             totalAmount,
             dueAmount: totalAmount,
             status: 'PENDING',
+            createdById,
             items: {
                 create: itemsData,
             },
@@ -198,18 +222,22 @@ export const addPayment = async (data: AddPaymentInput) => {
         throw new Error('Invoice not found');
     }
 
-    const newDueAmount = invoice.dueAmount - data.amount;
+    const paymentId = await generatePaymentId();
+
+    const currentDue = Number(invoice.dueAmount);
+    const newDueAmount = currentDue - data.amount;
     const newStatus: InvoiceStatus = newDueAmount <= 0 ? 'PAID' : 'PARTIAL';
 
     // Create payment and update invoice in a transaction
     const result = await prisma.$transaction([
         prisma.payment.create({
             data: {
+                paymentId,
                 invoiceId: data.invoiceId,
                 amount: data.amount,
-                method: data.method,
+                paymentMode: data.method,
                 reference: data.reference,
-                notes: data.notes,
+                // notes: data.notes, // does not exist on Payment model
                 receivedAt: new Date(),
             },
         }),
@@ -218,7 +246,6 @@ export const addPayment = async (data: AddPaymentInput) => {
             data: {
                 dueAmount: Math.max(0, newDueAmount),
                 status: newStatus,
-                paidAt: newStatus === 'PAID' ? new Date() : undefined,
             },
         }),
     ]);

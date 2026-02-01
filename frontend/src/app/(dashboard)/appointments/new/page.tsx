@@ -37,7 +37,7 @@ export default function NewAppointmentPage() {
         doctorId: '',
         date: new Date().toISOString().split('T')[0],
         startTime: '',
-        type: 'NEW' as 'NEW' | 'FOLLOWUP' | 'EMERGENCY',
+        type: 'CONSULTATION' as 'CONSULTATION' | 'FOLLOW_UP' | 'PROCEDURE' | 'LAB' | 'RADIOLOGY',
         reason: '',
         notes: '',
     });
@@ -214,9 +214,9 @@ export default function NewAppointmentPage() {
                             onChange={(e) => setFormData({ ...formData, type: e.target.value as any })}
                             className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-teal-500 focus:border-transparent outline-none transition-all"
                         >
-                            <option value="NEW">New Consultation</option>
-                            <option value="FOLLOWUP">Follow-up</option>
-                            <option value="EMERGENCY">Emergency</option>
+                            <option value="CONSULTATION">New Consultation</option>
+                            <option value="FOLLOW_UP">Follow-up</option>
+                            <option value="PROCEDURE">Procedure</option>
                         </select>
                     </div>
                 </div>
@@ -239,8 +239,8 @@ export default function NewAppointmentPage() {
                                     type="button"
                                     onClick={() => setFormData({ ...formData, startTime: slot })}
                                     className={`px-3 py-2 text-sm font-medium rounded-lg transition-all ${formData.startTime === slot
-                                            ? 'bg-teal-500 text-white'
-                                            : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                                        ? 'bg-teal-500 text-white'
+                                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
                                         }`}
                                 >
                                     {formatTime(slot)}

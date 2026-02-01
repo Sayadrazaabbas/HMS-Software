@@ -47,7 +47,7 @@ export const getMedicines = async ({ page, limit, search, category }: GetMedicin
             take: limit,
             orderBy: { name: 'asc' },
             include: {
-                stock: {
+                stocks: { // Renamed from stock to stocks
                     orderBy: { expiryDate: 'asc' },
                     take: 1,
                 },
@@ -58,11 +58,11 @@ export const getMedicines = async ({ page, limit, search, category }: GetMedicin
 
     // Add computed stock quantities
     const dataWithStock = data.map(medicine => {
-        const totalStock = medicine.stock.reduce((sum, s) => sum + s.quantity, 0);
+        const totalStock = medicine.stocks.reduce((sum, s) => sum + s.quantity, 0);
         return {
             ...medicine,
             stockQuantity: totalStock,
-            isLowStock: totalStock < (medicine.minStock || 10),
+            isLowStock: totalStock < (medicine.reorderLevel || 10), // minStock was wrong, used reorderLevel from schema
         };
     });
 
@@ -84,7 +84,7 @@ export const getMedicineById = async (id: string) => {
     return prisma.medicine.findUnique({
         where: { id },
         include: {
-            stock: {
+            stocks: { // Renamed from stock to stocks
                 orderBy: { expiryDate: 'asc' },
             },
         },
@@ -97,7 +97,7 @@ export const getMedicineById = async (id: string) => {
 export const getStockOverview = async () => {
     const medicines = await prisma.medicine.findMany({
         include: {
-            stock: true,
+            stocks: true, // Renamed
         },
     });
 
@@ -110,17 +110,17 @@ export const getStockOverview = async () => {
     thirtyDaysFromNow.setDate(thirtyDaysFromNow.getDate() + 30);
 
     medicines.forEach(medicine => {
-        const totalStock = medicine.stock.reduce((sum, s) => sum + s.quantity, 0);
+        const totalStock = medicine.stocks.reduce((sum, s) => sum + s.quantity, 0);
         totalItems++;
 
         if (totalStock === 0) {
             outOfStockItems++;
-        } else if (totalStock < (medicine.minStock || 10)) {
+        } else if (totalStock < (medicine.reorderLevel || 10)) { // reorderLevel
             lowStockItems++;
         }
 
         // Check for expiring stock
-        const hasExpiring = medicine.stock.some(s =>
+        const hasExpiring = medicine.stocks.some(s =>
             s.expiryDate && new Date(s.expiryDate) <= thirtyDaysFromNow && s.quantity > 0
         );
         if (hasExpiring) {
@@ -142,16 +142,16 @@ export const getStockOverview = async () => {
 export const getLowStock = async () => {
     const medicines = await prisma.medicine.findMany({
         include: {
-            stock: true,
+            stocks: true, // Renamed
         },
     });
 
     return medicines.filter(medicine => {
-        const totalStock = medicine.stock.reduce((sum, s) => sum + s.quantity, 0);
-        return totalStock < (medicine.minStock || 10);
+        const totalStock = medicine.stocks.reduce((sum, s) => sum + s.quantity, 0);
+        return totalStock < (medicine.reorderLevel || 10);
     }).map(medicine => ({
         ...medicine,
-        stockQuantity: medicine.stock.reduce((sum, s) => sum + s.quantity, 0),
+        stockQuantity: medicine.stocks.reduce((sum, s) => sum + s.quantity, 0),
     }));
 };
 
@@ -175,7 +175,7 @@ export const dispenseMedicine = async (data: DispenseInput) => {
         const medicine = await prisma.medicine.findUnique({
             where: { id: item.medicineId },
             include: {
-                stock: {
+                stocks: { // Renamed
                     where: { quantity: { gt: 0 } },
                     orderBy: { expiryDate: 'asc' }, // FIFO by expiry
                 },
@@ -186,14 +186,18 @@ export const dispenseMedicine = async (data: DispenseInput) => {
             throw new Error(`Medicine ${item.medicineId} not found`);
         }
 
-        const totalStock = medicine.stock.reduce((sum, s) => sum + s.quantity, 0);
+        const totalStock = medicine.stocks.reduce((sum, s) => sum + s.quantity, 0);
         if (totalStock < item.quantity) {
             throw new Error(`Insufficient stock for ${medicine.name}`);
         }
 
+        // Determine unit price from the first stock batch (approximation for receipt)
+        // Ideally we track price from each batch, but for now take the first batch's MRP
+        const unitPrice = medicine.stocks[0]?.mrp ? Number(medicine.stocks[0].mrp) : 0;
+
         // Deduct from stock (FIFO)
         let remaining = item.quantity;
-        for (const stock of medicine.stock) {
+        for (const stock of medicine.stocks) {
             if (remaining <= 0) break;
 
             const deductAmount = Math.min(remaining, stock.quantity);
@@ -208,8 +212,8 @@ export const dispenseMedicine = async (data: DispenseInput) => {
             medicineId: medicine.id,
             medicineName: medicine.name,
             quantity: item.quantity,
-            unitPrice: medicine.sellingPrice || 0,
-            amount: (medicine.sellingPrice || 0) * item.quantity,
+            unitPrice: unitPrice,
+            amount: unitPrice * item.quantity,
         });
     }
 
@@ -228,9 +232,10 @@ export const dispenseMedicine = async (data: DispenseInput) => {
 export const getPrescriptions = async (patientId?: string) => {
     const where: any = {};
     if (patientId) {
-        where.visit = {
-            patientId,
-        };
+        where.patientId = patientId; // Corrected from visit.patientId
+        // Wait, Schema for Prescription:
+        // visitId String @unique, patientId String, doctorId String.
+        // It has direct patientId field.
     }
 
     return prisma.prescription.findMany({
@@ -240,9 +245,6 @@ export const getPrescriptions = async (patientId?: string) => {
         include: {
             visit: {
                 include: {
-                    patient: {
-                        select: { id: true, patientId: true, name: true },
-                    },
                     doctor: {
                         include: {
                             user: { select: { name: true } },

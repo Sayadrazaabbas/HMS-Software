@@ -38,12 +38,16 @@ export default function LoginPage() {
             <div className="relative w-full max-w-md mx-4">
                 <div className="bg-white rounded-2xl shadow-2xl shadow-teal-500/10 p-8 border border-gray-100">
                     {/* Logo & Title */}
-                    <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl mb-4 shadow-lg shadow-teal-500/30">
-                            <Building2 className="w-8 h-8 text-white" />
+                    <div className="text-center mb-10">
+                        <div className="inline-flex items-center justify-center w-24 h-24 bg-white rounded-[2rem] mb-6 shadow-2xl shadow-teal-500/10 border border-gray-50 relative overflow-hidden group">
+                            <img
+                                src="/logo-primary.png"
+                                alt="BN Hospital"
+                                className="w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-500"
+                            />
                         </div>
-                        <h1 className="text-2xl font-bold text-gray-900">BN Hospital</h1>
-                        <p className="text-gray-500 mt-1">Hospital Management System</p>
+                        <h1 className="text-4xl font-black text-gray-900 tracking-tighter uppercase leading-none">BN Hospital</h1>
+                        <p className="text-[10px] font-black text-gray-500 uppercase tracking-[0.3em] mt-3">Health Care Management System</p>
                     </div>
 
                     {/* Error Message */}

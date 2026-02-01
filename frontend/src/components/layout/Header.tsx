@@ -16,6 +16,9 @@ export default function Header() {
         <header className="h-16 bg-white border-b border-gray-100 flex items-center justify-between px-6 sticky top-0 z-30">
             {/* Search */}
             <div className="flex items-center gap-4 flex-1">
+                <div className="md:hidden w-10 h-10 flex-shrink-0">
+                    <img src="/logo-icon.png" alt="BN Hospital" className="w-full h-full object-contain" />
+                </div>
                 <div className="relative w-full max-w-md">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
                     <input

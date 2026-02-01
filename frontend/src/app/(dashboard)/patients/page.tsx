@@ -137,8 +137,8 @@ export default function PatientsPage() {
                                                 <td className="px-6 py-4 text-sm text-gray-600">{patient.phone}</td>
                                                 <td className="px-6 py-4">
                                                     <span className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${patient.gender === 'MALE'
-                                                            ? 'bg-blue-100 text-blue-700'
-                                                            : 'bg-pink-100 text-pink-700'
+                                                        ? 'bg-blue-100 text-blue-700'
+                                                        : 'bg-pink-100 text-pink-700'
                                                         }`}>
                                                         {patient.gender}
                                                     </span>

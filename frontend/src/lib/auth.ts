@@ -20,14 +20,32 @@ export const authService = {
     /**
      * Login user and store tokens
      */
+    /**
+     * Login user and store tokens (MOCKED)
+     */
     async login(email: string, password: string): Promise<User> {
-        const response = await authApi.login(email, password);
-        const { user, accessToken, refreshToken } = response.data.data;
+        // Mock response
+        const user: User = {
+            id: 'mock-user-1',
+            email: email,
+            name: 'Test Administrator',
+            phone: '9876543210',
+            avatar: null,
+            role: {
+                id: 'role-1',
+                name: 'admin',
+                displayName: 'Administrator',
+                permissions: ['*']
+            }
+        };
 
-        // Store tokens
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
+        // Store mock tokens
+        localStorage.setItem('accessToken', 'mock-access-token');
+        localStorage.setItem('refreshToken', 'mock-refresh-token');
         localStorage.setItem('user', JSON.stringify(user));
+
+        // Simulate network delay
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         return user;
     },
@@ -42,18 +60,8 @@ export const authService = {
             return JSON.parse(userStr);
         }
 
-        // If no local user, try API
-        const token = localStorage.getItem('accessToken');
-        if (!token) return null;
-
-        try {
-            const response = await authApi.getCurrentUser();
-            const user = response.data.data;
-            localStorage.setItem('user', JSON.stringify(user));
-            return user;
-        } catch {
-            return null;
-        }
+        // Return null if not in storage (force login)
+        return null;
     },
 
     /**

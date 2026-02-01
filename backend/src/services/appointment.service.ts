@@ -1,4 +1,4 @@
-import { PrismaClient, AppointmentStatus } from '@prisma/client';
+import { PrismaClient, AppointmentStatus, AppointmentType } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -16,7 +16,7 @@ interface CreateAppointmentInput {
     date: Date;
     startTime: string;
     endTime?: string;
-    type: 'NEW' | 'FOLLOWUP' | 'EMERGENCY';
+    type: AppointmentType;
     reason?: string;
     notes?: string;
 }
